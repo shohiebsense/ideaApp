@@ -125,12 +125,10 @@ class _IdeaWidgetState extends State<IdeaWidget> {
 
                       Padding(
                         padding: const EdgeInsets.only(left: 2, top: 4),
-                        child: Expanded(
-                          child: Text(
-                            '${widget.idea.body}',
-                            style: TextStyle(fontSize: 14,
-                              fontWeight:  sigmaX > 0 ? FontWeight.w200 : FontWeight.w400,
-                            ),
+                        child: Text(
+                          '${widget.idea.body}',
+                          style: TextStyle(fontSize: 14,
+                            fontWeight:  sigmaX > 0 ? FontWeight.w200 : FontWeight.w400,
                           ),
                         ),
                       ),
