@@ -69,7 +69,7 @@ Future<Idea> getNewIdea(BuildContext context) async {
   if(true){
     Idea idea = Idea(id: newestId, date: now.toString());
     newestId++;
-    ideaList.add(idea);
+    ideaList.insert(0, idea);
     context.read<LoadingState>().toggleFinish(1);
     return idea;
   }
@@ -78,9 +78,9 @@ Future<Idea> getNewIdea(BuildContext context) async {
 }
 
  updateIdea(int index, Idea idea) {
-  if(index == -1){
+  /*if(index == -1){
     saveNewIdea(idea);
-  }
+  }*/
 }
 
 void saveNewIdea(Idea idea) {
