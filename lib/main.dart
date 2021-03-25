@@ -91,6 +91,11 @@ class _MyHomePageState extends State<MyHomePage> {
                     sortByDate();
                   });
                   break;
+                case 'Default':
+                  setState(() {
+                    sortDefault();
+                  });
+                  break;
               }
             }),
         body: FutureBuilder<List<Idea>>(

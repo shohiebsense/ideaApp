@@ -17,7 +17,7 @@ AppBar getDefaultAppBar(
           PopupMenuButton<String>(
             onSelected: handleClick,
             itemBuilder: (BuildContext context) {
-              return {'Sort by Title', 'Newest', 'Sort by Id', 'Oldest'}
+              return {'Sort by Title', 'Newest', 'Sort by Id', 'Oldest', 'Default'}
                   .map((String choice) {
                 return PopupMenuItem<String>(
                   value: choice,

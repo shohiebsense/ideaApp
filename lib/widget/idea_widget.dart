@@ -127,6 +127,7 @@ class _IdeaWidgetState extends State<IdeaWidget> {
                         padding: const EdgeInsets.only(left: 2, top: 4),
                         child: Text(
                           '${widget.idea.body}',
+                          maxLines: 9,
                           style: TextStyle(fontSize: 14,
                             fontWeight:  sigmaX > 0 ? FontWeight.w200 : FontWeight.w400,
                           ),

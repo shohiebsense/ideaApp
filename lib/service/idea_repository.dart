@@ -101,6 +101,10 @@ void sortByTitle(){
   ideaList.sort((idea1,idea2) => idea1.title.compareTo(idea2.title));
 }
 
+void sortDefault(){
+  ideaList.sort((idea1,idea2) => idea1.id.compareTo(idea2.id));
+}
+
 void sortById(){
   ideaList.sort((idea1,idea2) => idea2.id.compareTo(idea1.id));
 }
