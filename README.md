@@ -1,5 +1,5 @@
-# bcg_idea
+# Idea App
 
-BCG "Idea" App Using Flutter
+"Idea" App Using Flutter
 
 ![Showcase](https://github.com/shohiebsense/ideaApp/blob/master/showcase.gif)
