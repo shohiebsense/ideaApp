@@ -9,6 +9,7 @@ import 'package:bcg_idea/widget/idea_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:provider/provider.dart';
+import 'package:shimmer_animation/shimmer_animation.dart';
 
 void main() {
   runApp(MultiProvider(providers: [
@@ -41,7 +42,6 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
 
-  bool isLoading = true;
   Future<List<Idea>> fetchIdeaFuture;
   final GlobalKey<AnimatedListState> listKey = GlobalKey<AnimatedListState>();
 
@@ -105,7 +105,6 @@ class _MyHomePageState extends State<MyHomePage> {
               if (snapshot.hasData) {
                 return Scrollbar(
                   isAlwaysShown: false,
-
                   child: GridView.builder(
                     scrollDirection: Axis.vertical,
                     key: listKey,
@@ -152,16 +151,13 @@ class _MyHomePageState extends State<MyHomePage> {
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 2,
                 ),
-                itemCount: 4,
+                itemCount: 8,
                 itemBuilder: (context, index) {
-                  if (index < 3) {
                     return IdeaWidget(
                       idea: Idea.dummy(),
                       index: -1,
                       onDeleted: null,
                     );
-                  }
-                  return Container();
                 },
               );
             }),

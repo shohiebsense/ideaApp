@@ -8,6 +8,7 @@ import 'package:bcg_idea/service/idea_repository.dart';
 import 'package:bcg_idea/widget/default_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shimmer_animation/shimmer_animation.dart';
 
 class IdeaWidget extends StatefulWidget {
   Idea idea;
@@ -22,13 +23,13 @@ class IdeaWidget extends StatefulWidget {
 
 class _IdeaWidgetState extends State<IdeaWidget> {
 
-
-
+  bool _isBlurEnabled = false;
   double sigmaX = 0;
   double sigmaY = 0;
 
   void onDeleteStarted() {
     setState(() {
+      bool _isBlurEnabled = true;
       sigmaY = 7;
       sigmaX = 7;
     });
@@ -37,6 +38,7 @@ class _IdeaWidgetState extends State<IdeaWidget> {
       this.widget.onDeleted(this.widget.index);
     }
     setState(() {
+      bool _isBlurEnabled = false;
       sigmaY = 0;
       sigmaX = 0;
     });
@@ -44,39 +46,40 @@ class _IdeaWidgetState extends State<IdeaWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onLongPress: () {
-        Provider.of<ItemState>(context, listen: false)
-            .updateSelectedIndex(this.widget.index);
-        print(
-            "on long pressed ${Provider.of<ItemState>(context, listen: false).currentIndex}");
-      },
-      onTap: () {
-        if (Provider.of<ItemState>(context, listen: false)
-            .isCurrentlySelected()) {
-          Provider.of<ItemState>(context, listen: false).resetIndex();
-          return;
-        }
-        setState(() {
-          sigmaX = 7;
-          sigmaY = 7;
-        });
-        Provider.of<LoadingState>(context, listen: false).toggleFinish(0);
-        Future.delayed(Duration(seconds: 2), () {
+    return Shimmer(
+      color: Colors.black87,
+      enabled: _isBlurEnabled || this.widget.index == -1,
+      child: InkWell(
+        onLongPress: () {
+          Provider.of<ItemState>(context, listen: false)
+              .updateSelectedIndex(this.widget.index);
+          print(
+              "on long pressed ${Provider.of<ItemState>(context, listen: false).currentIndex}");
+        },
+        onTap: () {
+          if (Provider.of<ItemState>(context, listen: false)
+              .isCurrentlySelected()) {
+            Provider.of<ItemState>(context, listen: false).resetIndex();
+            return;
+          }
           setState(() {
-            sigmaY = 0;
-            sigmaX = 0;
+            _isBlurEnabled = true;
+            sigmaX = 7;
+            sigmaY = 7;
           });
-          Provider.of<LoadingState>(context, listen: false).toggleFinish(1);
-          Navigator.of(context).push(
-              navigateToDetailPage(idea: widget.idea, index: widget.index));
-        });
-      },
-      child: ClipRRect(
-        child: BackdropFilter(
-          filter: this.widget.idea.id == -1
-              ? ImageFilter.blur(sigmaX: 5, sigmaY: 5)
-              : ImageFilter.blur(sigmaX: sigmaX, sigmaY: sigmaY),
+          Provider.of<LoadingState>(context, listen: false).toggleFinish(0);
+          Future.delayed(Duration(milliseconds: 1500), () {
+            setState(() {
+              _isBlurEnabled = false;
+              sigmaY = 0;
+              sigmaX = 0;
+            });
+            Provider.of<LoadingState>(context, listen: false).toggleFinish(1);
+            Navigator.of(context).push(
+                navigateToDetailPage(idea: widget.idea, index: widget.index));
+          });
+        },
+        child: ClipRRect(
           child: Container(
             height: 150,
             width: 150,
@@ -98,16 +101,13 @@ class _IdeaWidgetState extends State<IdeaWidget> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Flexible(
-                            child: BackdropFilter(
-                              filter: ImageFilter.blur(sigmaX: 0, sigmaY: 0),
-                              child: Text(
-                                '${widget.idea.title}',
-                                maxLines: 2,
-                                style: TextStyle(
-                                  fontWeight: sigmaX > 0 ? FontWeight.w200 : FontWeight.w500,
-                                  fontSize: 18,
-                                  //fontWeight: FontWeight.w600,
-                                ),
+                            child: Text(
+                              '${widget.idea.title}',
+                              maxLines: 2,
+                              style: TextStyle(
+                                fontWeight: sigmaX > 0 ? FontWeight.w200 : FontWeight.w500,
+                                fontSize: 18,
+                                //fontWeight: FontWeight.w600,
                               ),
                             ),
                           ),
@@ -122,7 +122,6 @@ class _IdeaWidgetState extends State<IdeaWidget> {
                               : Container(),
                         ],
                       ),
-
                       Padding(
                         padding: const EdgeInsets.only(left: 2, top: 4),
                         child: Text(
@@ -136,19 +135,12 @@ class _IdeaWidgetState extends State<IdeaWidget> {
                     ],
                   ),
                 ),
-
-
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    BackdropFilter(
-                      filter: this.widget.idea.id == -1
-                          ? ImageFilter.blur(sigmaX: 5, sigmaY: 5)
-                          : ImageFilter.blur(sigmaX: sigmaX, sigmaY: sigmaY),
-                      child: Text(this.widget.idea.id == -1 ? '' :
-                      'id: ${widget.idea.id}',
-                        style: TextStyle(color: Colors.grey, fontSize: 12),
-                      ),
+                    Text(this.widget.idea.id == -1 ? '' :
+                    'id: ${widget.idea.id}',
+                      style: TextStyle(color: Colors.grey, fontSize: 12),
                     ),
                     Text(
                       this.widget.idea.date,
